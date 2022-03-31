@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 // import java.util.Scanner;
 import java.util.Arrays;
+import java.util.List;
 
 public class ProblemaP1 {
     
@@ -46,14 +47,36 @@ public class ProblemaP1 {
             e.printStackTrace();
         }
 
+
     }
 
     private static void iniciarCaso(String[] setup, String[] pesoPisos, String[] portales) {
         //TODO No lo sé, iniciar uno de los casos de prueba supongo xD
         //Quizás sea bueno paralelizar esto
+        String[] piso = new String[Integer.parseInt(setup[1])];
+
+        String pesoPiso = pesoPisos[0];
+        String[] portal_piso = new String[Integer.parseInt(setup[1])];
+        List portales_piso = new ArrayList<>();
+        for (int i = 0; i< portales.length;i++){
+
+            String[] portal = portales[i].trim().split(" ");
+
+            if (Integer.parseInt(portal[1]) == 1){
+                portales_piso.add(portales[i]);
+            }
+        }
+        for(int i = 0; i < portales_piso.size(); i++) {
+            System.out.println(portales_piso.get(i));
+        }
+
+
+
+
+
         System.out.println("El caso se inicializa");
         System.out.println("Setup = " + setup[0] + " " + setup[1] + " " + setup[2]);
-        System.out.println("PesoPisos = " + pesoPisos.toString());
+        System.out.println("PesoPisos = " + Arrays.toString(pesoPisos));
         System.out.println("Portales = " + Arrays.toString(portales));
 
     }
