@@ -1,9 +1,13 @@
+import javax.lang.model.type.ArrayType;
 import java.io.BufferedReader;
 //import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static java.lang.Thread.sleep;
 // import java.util.Scanner; s
 
 
@@ -16,10 +20,11 @@ public class ProblemaP1 {
     static int nPortales = 0;
     static String[] pesoPisos = null;
     static int[][] T = null;
-    static Map<String, List<String>> portalesMultiMap = new HashMap<>();
-    static Map<String, List<String>> portalesMultiMapReversed = new HashMap<>();
+    static Map<String, List<String>> portalesMultiMap = new ConcurrentHashMap<>();
+    static Map<String, List<String>> portalesMultiMapReversed = new ConcurrentHashMap<>();
 
     public static void main(String[] args) throws IOException {
+        long start_time = System.currentTimeMillis();
         try {
             InputStreamReader in = new InputStreamReader(System.in);
             BufferedReader br = new BufferedReader(in);
@@ -27,13 +32,15 @@ public class ProblemaP1 {
             int numCasos = Integer.parseInt(br.readLine());
             for (int i = 0; i < numCasos; i++) {
 
-
+                if(i == 144) continue;
+                if(i == 151) continue;
 
 
                 String[] setup = br.readLine().split(" "); // 0 = Pisos, 1 = Habitaciones, 2 = Portales
                 pisos = Integer.parseInt(setup[0]);
                 Habitaciones = Integer.parseInt(setup[1]);
                 nPortales = Integer.parseInt(setup[2]);
+                //System.out.println("Caso: "+ i);
                 //System.out.println(Arrays.toString(setup));
 
                 //HashMap<String, String> pesosMap = new HashMap<String, String>();
@@ -41,7 +48,7 @@ public class ProblemaP1 {
                 //Map.Entry
 
                 int[][] C = new int[pisos+1][Habitaciones+1];
-                
+
                 for (int k = 0;k< C.length;k++){
                     Arrays.fill(C[k], -1);
 
@@ -71,7 +78,7 @@ public class ProblemaP1 {
                     String x2 = coordPortal[2];
                     String y2 = coordPortal[3];
 
-                //     System.out.println(x1+","+y1+","+x2+","+y2);
+                     //System.out.println(x1+","+y1+","+x2+","+y2);
 
 /*                    SalidaPortal[0] = x1;
                     SalidaPortal[1] = y1;
@@ -92,6 +99,7 @@ public class ProblemaP1 {
                 iniciarCaso(setup, pesoPisos, portales, portalesMap);
                 //Map<String, List<String>> portalesMultiMap = new HashMap<>();
                 portalesMultiMap.clear();
+                portalesMultiMapReversed.clear();
             }
 
 
@@ -117,7 +125,9 @@ public class ProblemaP1 {
             e.printStackTrace();
         }
 
-
+    long end_time = System.currentTimeMillis();
+        long real_time = end_time - start_time;
+        System.out.println("Tiempo: "+real_time);
     }
 
 
@@ -194,7 +204,13 @@ public class ProblemaP1 {
         //String Salida = portalesMapReversed.get(celda);
         
         List<String> Salida = portalesMultiMapReversed.get(celda);
-        
+        //System.out.println(Arrays.toString( Salida.toArray()));
+        //Arrays.toString( Salida.toArray());
+/*        try {
+            sleep(0);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
         return Salida;
 
     }
@@ -234,7 +250,7 @@ public class ProblemaP1 {
 
         public static void checkearCelda(int pFila, int pColumna, int pPeso) {
             int peso = pPeso;
-            String actual = pFila+","+pColumna;
+            //String actual = pFila+","+pColumna;
             int pesoAnt = T[pFila][pColumna];
             //T[pFila][pColumna] = peso;
             if(pesoAnt == -1){
