@@ -16,7 +16,8 @@ public class ProblemaP1 {
     static int nPortales = 0;
     static String[] pesoPisos = null;
     static int[][] T = null;
-
+    static Map<String, List<String>> portalesMultiMap = new HashMap<>();
+    static Map<String, List<String>> portalesMultiMapReversed = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
         try {
@@ -25,10 +26,15 @@ public class ProblemaP1 {
 
             int numCasos = Integer.parseInt(br.readLine());
             for (int i = 0; i < numCasos; i++) {
+
+
+
+
                 String[] setup = br.readLine().split(" "); // 0 = Pisos, 1 = Habitaciones, 2 = Portales
                 pisos = Integer.parseInt(setup[0]);
                 Habitaciones = Integer.parseInt(setup[1]);
                 nPortales = Integer.parseInt(setup[2]);
+                //System.out.println(Arrays.toString(setup));
 
                 //HashMap<String, String> pesosMap = new HashMap<String, String>();
                 //m = pesosMap.entrySet();
@@ -42,15 +48,16 @@ public class ProblemaP1 {
                 }
 
                 T = C;
-                System.out.println(Arrays.deepToString(T)+"s");;
+                //System.out.println(Arrays.deepToString(T)+"s");;
                 pesoPisos = br.readLine().split(" ");
-
+                //System.out.println(Arrays.toString(pesoPisos));
                 List listportalespiso = new ArrayList();
                 String[] portales = new String[Integer.parseInt(setup[2])];
 /*                HashMap<String, String> portalesMap = null;
                 portalesMap = new HashMap<>();*/
 /*                HashMap<String, String> portalesMapReversed = null;
                 portalesMapReversed = new HashMap<>();*/
+                //System.out.println(portales.length);
                 for (int j = 0; j < portales.length; j++) {
 
                     String[] SalidaPortal = new String[2];
@@ -58,32 +65,33 @@ public class ProblemaP1 {
 
                     portales[j] = br.readLine();
                     String[] coordPortal = portales[j].split(" ");
-                    System.out.println(coordPortal);
+                    //System.out.println(Arrays.toString( coordPortal));
                     String x1 = coordPortal[0];
                     String y1 = coordPortal[1];
                     String x2 = coordPortal[2];
                     String y2 = coordPortal[3];
 
-                    System.out.println(x1+","+y1+","+x2+","+y2);
+                //     System.out.println(x1+","+y1+","+x2+","+y2);
 
 /*                    SalidaPortal[0] = x1;
                     SalidaPortal[1] = y1;
                     LlegadaPortal[0] = x2;
                     LlegadaPortal[1] = y2;*/
-                    Map<String,List<String>> portalesMultiMap = new Map<>();
-                    List<String>lis = portalesMultiMap.get("");
-                    if(lis == null) {
-                        lis = new ArrayList<>();
-                    }
-                        lis.add("John");
+                    // Map<String,List<String>> portalesMultiMap = new ConcurrentHashMap<>();
+                    // portalesMultiMap.computeIfAbsent(key, mappingFunction)
 
-                    portalesMultimap.computeIfAbsent("", (k -> new ArrayList<>()).add();
+                    //portalesMultiMap = new HashMap<>();
+                    //System.out.println(x1+","+y1+","+x2+","+y2);
+                    portalesMultiMap.computeIfAbsent(x1+","+y1, k -> new ArrayList<>()).add(x2+","+y2);
+                    portalesMultiMapReversed.computeIfAbsent(x2+","+y2, k -> new ArrayList<>()).add(x1+","+y1);
 
                     portalesMap.put(x1+","+y1, x2+","+y2);
                     portalesMapReversed.put(x2+","+y2,x1+","+y1);
                     //  portales
                 }
                 iniciarCaso(setup, pesoPisos, portales, portalesMap);
+                //Map<String, List<String>> portalesMultiMap = new HashMap<>();
+                portalesMultiMap.clear();
             }
 
 
@@ -105,7 +113,7 @@ public class ProblemaP1 {
             // }
             br.close();
         } catch (FileNotFoundException e) {
-            System.out.println("Ese no es el archivo");
+            //System.out.println("Ese no es el archivo");
             e.printStackTrace();
         }
 
@@ -117,44 +125,59 @@ public class ProblemaP1 {
         //TODO No lo sé, iniciar uno de los casos de prueba supongo xD
         //Quizás sea bueno paralelizar esto
 
-        Set<String> setOfKeys = portalesMap.keySet();
-        System.out.println("tamaño mapa "+ portalesMap.size());
+/*         System.out.println("Arreglo de llaves: "+Arrays.toString(portalesMultiMap.keySet().toArray()));
+        System.out.println("Arreglo de valores: "+ Arrays.toString(portalesMultiMap.values().toArray()) ); */
+
+        //Set<String> setOfKeys = portalesMap.keySet();
+        // System.out.println("tamaño mapa "+ portalesMap.size());
         // Iterating through the Hashtable
         // object using for-Each loop
         
         
 
-        for (String key : setOfKeys) {
+/*         for (String key : setOfKeys) {
             // Print and display the Rank and Name
             System.out.println("Salida : " + key
                     + "\t\t Llegada : "
                     + portalesMap.get(key));
-        }
+        } */
 
-        Set<String> setOfKeys2 = portalesMapReversed.keySet();
-        System.out.println("tamaño mapa Reversed"+ portalesMapReversed.size());
+        //Set<String> setOfKeys2 = portalesMapReversed.keySet();
+        // System.out.println("tamaño mapa Reversed"+ portalesMapReversed.size());
         // Iterating through the Hashtable
         // object using for-Each loop
-        for (String key : setOfKeys2) {
+/*         for (String key : setOfKeys2) {
             // Print and display the Rank and Name
             System.out.println("Llegada : " + key
                     + "\t\t Salida : "
                     + portalesMapReversed.get(key));
-        }
+        } */
             inicializar();
-            System.out.println("El caso se inicializa");
+ /*            System.out.println("El caso se inicializa");
             System.out.println("Setup = " + setup[0] + " " + setup[1] + " " + setup[2]);
             System.out.println("PesoPisos = " + Arrays.toString(pesoPisos));
-            System.out.println("Portales = " + Arrays.toString(portales));
-            System.out.println("El resultado es: " + (T[1][1] == -1?"NO EXISTE":T[1][1]));
+            System.out.println("Portales = " + Arrays.toString(portales)); */
+            System.out.println(T[1][1] == -1?"NO EXISTE":T[1][1]);
 
         return true;
     }
-        public static boolean esPortalLlegada ( int fila, int columna, HashMap portalesMap){
+        public static boolean esPortalLlegada ( int fila, int columna, Map<String, List<String>>  portalesMultiMap){
 
             boolean a = false;
             String celda = fila + "," + columna;
-            a = portalesMap.containsValue(celda);
+            //a = portalesMultiMap.containsValue(celda);
+            //a = portalesMultiMap.values();
+            //System.out.println(celda);
+            //System.out.println(Arrays.deepToString( portalesMultiMap.keySet().toArray()));
+            //System.out.println(Arrays.deepToString( portalesMultiMap.values().toArray()));
+            for (Map.Entry<String, List<String>> entry : portalesMultiMap.entrySet()){
+                 //System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue().contains(celda));
+                if (entry.getValue().contains(celda))
+                {
+                    a = true;
+                }
+
+        }
             return a;
         }
     public boolean esPortalSalida ( int fila, int columna, HashMap portalesMap){
@@ -164,17 +187,15 @@ public class ProblemaP1 {
         a = portalesMap.containsKey(celda);
         return a;
     }
-    public static String darCoordsPortalSalida(int filaLlegada, int columnaLlegada){
+    public static List<String> darCoordsPortalSalida(int filaLlegada, int columnaLlegada){
 
         String celda = filaLlegada + "," + columnaLlegada;
 
-        String Salida = portalesMapReversed.get(celda);
+        //String Salida = portalesMapReversed.get(celda);
         
+        List<String> Salida = portalesMultiMapReversed.get(celda);
         
         return Salida;
-
-
-
 
     }
 
@@ -208,7 +229,7 @@ public class ProblemaP1 {
             //}
 
         //}
-            System.out.println(Arrays.deepToString(T));
+            // System.out.println(Arrays.deepToString(T));
         }
 
         public static void checkearCelda(int pFila, int pColumna, int pPeso) {
@@ -223,9 +244,19 @@ public class ProblemaP1 {
             }
 
 
-            if(esPortalLlegada(pFila,pColumna, portalesMap)){
-                String[] coords = darCoordsPortalSalida(pFila, pColumna).split(",");
-                checkearCelda(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), T[pFila][pColumna]);
+            if(esPortalLlegada(pFila,pColumna, portalesMultiMap)){
+
+                List<String> coordenadasSalida = darCoordsPortalSalida(pFila, pColumna);
+
+                for(int i = 0; i < coordenadasSalida.size();i++){
+                    String[] c = coordenadasSalida.get(i).split(",");
+                    String fila = c[0];
+                    String columna = c[1];
+                    checkearCelda(Integer.parseInt(fila), Integer.parseInt(columna), T[pFila][pColumna]);
+                }
+
+                /* String[] coords = darCoordsPortalSalida(pFila, pColumna).split(",");
+                checkearCelda(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), T[pFila][pColumna]); */
             }
             try{
                 int tmp = T[pFila][pColumna];
