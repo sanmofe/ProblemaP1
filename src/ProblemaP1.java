@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
-// import java.util.Scanner;
+// import java.util.Scanner; s
 
 
 public class ProblemaP1 {
@@ -70,6 +70,14 @@ public class ProblemaP1 {
                     SalidaPortal[1] = y1;
                     LlegadaPortal[0] = x2;
                     LlegadaPortal[1] = y2;*/
+                    Map<String,List<String>> portalesMultiMap = new Map<>();
+                    List<String>lis = portalesMultiMap.get("");
+                    if(lis == null) {
+                        lis = new ArrayList<>();
+                    }
+                        lis.add("John");
+
+                    portalesMultimap.computeIfAbsent("", (k -> new ArrayList<>()).add();
 
                     portalesMap.put(x1+","+y1, x2+","+y2);
                     portalesMapReversed.put(x2+","+y2,x1+","+y1);
@@ -77,6 +85,8 @@ public class ProblemaP1 {
                 }
                 iniciarCaso(setup, pesoPisos, portales, portalesMap);
             }
+
+
 
 
             //String linea  = br.readLine(); //Esto nos da los costos de los pisos del caso 1
@@ -136,6 +146,7 @@ public class ProblemaP1 {
             System.out.println("Setup = " + setup[0] + " " + setup[1] + " " + setup[2]);
             System.out.println("PesoPisos = " + Arrays.toString(pesoPisos));
             System.out.println("Portales = " + Arrays.toString(portales));
+            System.out.println("El resultado es: " + (T[1][1] == -1?"NO EXISTE":T[1][1]));
 
         return true;
     }
@@ -158,6 +169,7 @@ public class ProblemaP1 {
         String celda = filaLlegada + "," + columnaLlegada;
 
         String Salida = portalesMapReversed.get(celda);
+        
         
         return Salida;
 
@@ -189,11 +201,11 @@ public class ProblemaP1 {
 
         //for( i = pisos; i > 0; i--){
 
-            for( j = Habitaciones; j > 0; j--){
+            //for( j = Habitaciones; j > 0; j--){
 
-                checkearCelda(pisos,j,0);
+                checkearCelda(pisos,Habitaciones,0);
                 
-            }
+            //}
 
         //}
             System.out.println(Arrays.deepToString(T));
@@ -203,14 +215,17 @@ public class ProblemaP1 {
             int peso = pPeso;
             String actual = pFila+","+pColumna;
             int pesoAnt = T[pFila][pColumna];
-            T[pFila][pColumna] = peso;
-            if(pesoAnt != -1 && pesoAnt<peso){
-                T[pFila][pColumna] = pesoAnt;
+            //T[pFila][pColumna] = peso;
+            if(pesoAnt == -1){
+                T[pFila][pColumna] = peso;
+            }else if (pesoAnt > peso){
+                T[pFila][pColumna] = peso;
             }
+
 
             if(esPortalLlegada(pFila,pColumna, portalesMap)){
                 String[] coords = darCoordsPortalSalida(pFila, pColumna).split(",");
-                checkearCelda(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), peso);
+                checkearCelda(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), T[pFila][pColumna]);
             }
             try{
                 int tmp = T[pFila][pColumna];
@@ -220,18 +235,27 @@ public class ProblemaP1 {
                     checkearIzquierda(pFila, pColumna, peso);
                         //peso += darPesoPiso(pFila);
 
+                }else if( T[pFila][pColumna] + darPesoPiso(pFila) <  T[pFila][pColumna-1] ){
+                    //peso = T[pFila][pColumna];
+                    peso += darPesoPiso(pFila);
+                    checkearIzquierda(pFila, pColumna, peso);
                 }
             }catch(Exception e){
 
             }
             try{
                 int tmp = T[pFila][pColumna];
-                //peso += darPesoPiso(pFila);
+
                 if (T[pFila][pColumna + 1] ==-1 ) {
+                    peso = T[pFila][pColumna];
                     peso += darPesoPiso(pFila);
                     checkearDerecha(pFila, pColumna, peso);
                         //peso += darPesoPiso(pFila);
 
+                }else if( T[pFila][pColumna] + darPesoPiso(pFila) <=  T[pFila][pColumna+1] ){
+                    peso = T[pFila][pColumna];
+                    peso += darPesoPiso(pFila);
+                    checkearDerecha(pFila, pColumna, peso);
                 }
             }catch(Exception e){
 
@@ -253,5 +277,5 @@ public class ProblemaP1 {
         //     }
         //     return checkearCelda(pFila, pColumna + 1);
         // }
-    }
-
+    }   
+    
