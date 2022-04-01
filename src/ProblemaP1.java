@@ -15,6 +15,7 @@ public class ProblemaP1 {
     static int pisos = 0;
     static int nPortales = 0;
     static String[] pesoPisos = null;
+    static int[][] T = null;
 
 
     public static void main(String[] args) throws IOException {
@@ -32,6 +33,16 @@ public class ProblemaP1 {
                 //HashMap<String, String> pesosMap = new HashMap<String, String>();
                 //m = pesosMap.entrySet();
                 //Map.Entry
+
+                int[][] C = new int[pisos+1][Habitaciones+1];
+                
+                for (int k = 0;k< C.length;k++){
+                    Arrays.fill(C[k], -1);
+
+                }
+
+                T = C;
+                System.out.println(Arrays.deepToString(T)+"s");;
                 pesoPisos = br.readLine().split(" ");
 
                 List listportalespiso = new ArrayList();
@@ -100,6 +111,9 @@ public class ProblemaP1 {
         System.out.println("tamaño mapa "+ portalesMap.size());
         // Iterating through the Hashtable
         // object using for-Each loop
+        
+        
+
         for (String key : setOfKeys) {
             // Print and display the Rank and Name
             System.out.println("Salida : " + key
@@ -117,7 +131,7 @@ public class ProblemaP1 {
                     + "\t\t Salida : "
                     + portalesMapReversed.get(key));
         }
-
+            inicializar();
             System.out.println("El caso se inicializa");
             System.out.println("Setup = " + setup[0] + " " + setup[1] + " " + setup[2]);
             System.out.println("PesoPisos = " + Arrays.toString(pesoPisos));
@@ -125,7 +139,7 @@ public class ProblemaP1 {
 
         return true;
     }
-        public boolean esPortalLlegada ( int fila, int columna, HashMap portalesMap){
+        public static boolean esPortalLlegada ( int fila, int columna, HashMap portalesMap){
 
             boolean a = false;
             String celda = fila + "," + columna;
@@ -139,7 +153,7 @@ public class ProblemaP1 {
         a = portalesMap.containsKey(celda);
         return a;
     }
-    public String darCoordsPortalSalida(int filaLlegada, int columnaLlegada){
+    public static String darCoordsPortalSalida(int filaLlegada, int columnaLlegada){
 
         String celda = filaLlegada + "," + columnaLlegada;
 
@@ -163,29 +177,81 @@ public class ProblemaP1 {
 
 
     }
-    public int darPesoPiso(int filaPiso){
-        return Integer.parseInt( pesoPisos[filaPiso]);
+    public static int darPesoPiso(int filaPiso){
+        return Integer.parseInt( pesoPisos[filaPiso-1]);
     }
 
-        public void inicializar () {
-
+    public static void inicializar () {
+            
         int i, j;
 
-        int T[][] = new int[pisos + 1][Habitaciones + 1];
+        //int T[][] = new int[pisos + 1][Habitaciones + 1];
 
-        for( i = pisos; i > 0; i--){
+        //for( i = pisos; i > 0; i--){
 
             for( j = Habitaciones; j > 0; j--){
 
-                if(i==0 || j == 0 ){
-                    T[i][j] = 0;
-                }
-
+                checkearCelda(pisos,j,0);
+                
             }
 
+        //}
+            System.out.println(Arrays.deepToString(T));
         }
 
+        public static void checkearCelda(int pFila, int pColumna, int pPeso) {
+            int peso = pPeso;
+            String actual = pFila+","+pColumna;
+            int pesoAnt = T[pFila][pColumna];
+            T[pFila][pColumna] = peso;
+            if(pesoAnt != -1 && pesoAnt<peso){
+                T[pFila][pColumna] = pesoAnt;
+            }
+
+            if(esPortalLlegada(pFila,pColumna, portalesMap)){
+                String[] coords = darCoordsPortalSalida(pFila, pColumna).split(",");
+                checkearCelda(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), peso);
+            }
+            try{
+                int tmp = T[pFila][pColumna];
+                //peso += darPesoPiso(pFila);
+                if (T[pFila][pColumna -1] ==-1 && pColumna > 1) {
+                    peso += darPesoPiso(pFila);
+                    checkearIzquierda(pFila, pColumna, peso);
+                        //peso += darPesoPiso(pFila);
+
+                }
+            }catch(Exception e){
+
+            }
+            try{
+                int tmp = T[pFila][pColumna];
+                //peso += darPesoPiso(pFila);
+                if (T[pFila][pColumna + 1] ==-1 ) {
+                    peso += darPesoPiso(pFila);
+                    checkearDerecha(pFila, pColumna, peso);
+                        //peso += darPesoPiso(pFila);
+
+                }
+            }catch(Exception e){
+
+            }
+            
+            //T[pFila][pColumna] = peso;
+            //return peso;
         }
 
+        public static void checkearIzquierda(int pFila, int pColumna, int pPeso){
+            checkearCelda(pFila, pColumna - 1,pPeso);
+        }
+        public static void checkearDerecha(int pFila, int pColumna, int pPeso){
+            checkearCelda(pFila, pColumna + 1,pPeso);
+        }
+        // public int checkearDerecha(int pFila, int pColumna){
+        //     if (pColumna+1 < 0){
+        //         return -1;
+        //     }
+        //     return checkearCelda(pFila, pColumna + 1);
+        // }
     }
 
